@@ -17,6 +17,8 @@ import (
 func NewRouter(dbConn *sql.DB) http.Handler {
 	r := chi.NewRouter()
 
+	r.Use(middlewares.SentryMiddleware)
+
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Logger)
@@ -52,6 +54,11 @@ func NewRouter(dbConn *sql.DB) http.Handler {
         r.Post("/createSignature", handlers.NewCustomHandler().CreateSignature)
 	})
 
+
+	
 	return r
 }
+
+
+
 

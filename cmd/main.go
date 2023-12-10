@@ -5,12 +5,16 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/joho/godotenv"
 
 	"restapi/internal/app/router"
 	"restapi/internal/infrastructure/db"
 	"restapi/internal/infrastructure/hystrix"
+
+	"github.com/getsentry/sentry-go"
+	
 )
 
 func init() {
@@ -25,9 +29,23 @@ func init() {
     if err != nil {
         log.Fatal("Error loading .env file:", err)
     }
+
 }
 
 func main() {
+
+	err := sentry.Init(sentry.ClientOptions{
+        Dsn: "https://dc76d816bcdae49efdb05c0d460486c9@sentry.its.zone/4",
+    })
+    if err != nil {
+        log.Fatalf("sentry.Init: %s", err)
+    }
+
+	
+    defer sentry.Flush(2 * time.Second)
+
+
+
 	dbConn, err := db.NewConnection()
 	if err != nil {
 		log.Fatalf("Cannot connect to the database: %v", err)
@@ -44,4 +62,13 @@ func main() {
 
 	log.Printf("Starting server on port %s...", port)
 	log.Fatal(http.ListenAndServe(":"+port, r))
+
+	
+
+	
 }
+
+
+
+
+
