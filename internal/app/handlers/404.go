@@ -1,8 +1,10 @@
 package handlers
 
 import (
-    "net/http"
-    "github.com/getsentry/sentry-go"
+	"log"
+	"net/http"
+
+	"github.com/getsentry/sentry-go"
 )
 
 func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
@@ -11,4 +13,8 @@ func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
 
     // Respond with a 404 error
     http.NotFound(w, r)
+
+	log.Printf("404 Captured by SENTRY")
+
+	
 }

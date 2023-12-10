@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"errors"
+	"log"
 	"net/http"
 
 	"github.com/getsentry/sentry-go"
@@ -14,4 +15,6 @@ func ErrorHandler(w http.ResponseWriter, r *http.Request) {
 
     // Optionally, you can write a response to the client
     http.Error(w, err.Error(), http.StatusInternalServerError)
+
+	log.Printf("INTENTIONAL /error route Captured by SENTRY")
 }

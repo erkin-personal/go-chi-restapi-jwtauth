@@ -50,11 +50,12 @@ func NewRouter(dbConn *sql.DB) http.Handler {
 		})
 
 		r.Options("/*", handlers.NewCustomHandler().PreFlight) // Middleware for OPTIONS request
-        r.Get("/testGet", handlers.NewCustomHandler().TestGet)
+        r.Get("/users", handlers.NewCustomHandler().TestGet)
         r.Post("/testPost", handlers.NewCustomHandler().TestPost)
         r.Post("/getCertificate", handlers.NewCustomHandler().GetCertificate)
         r.Post("/checkSignature", handlers.NewCustomHandler().CheckSignature)
         r.Post("/createSignature", handlers.NewCustomHandler().CreateSignature)
+		
 	})
 
 
