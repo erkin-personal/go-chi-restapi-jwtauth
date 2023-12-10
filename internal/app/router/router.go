@@ -55,6 +55,8 @@ func NewRouter(dbConn *sql.DB) http.Handler {
         r.Post("/getCertificate", handlers.NewCustomHandler().GetCertificate)
         r.Post("/checkSignature", handlers.NewCustomHandler().CheckSignature)
         r.Post("/createSignature", handlers.NewCustomHandler().CreateSignature)
+
+		r.Get("/users", userHandler.GetAllUsers)
 		
 	})
 
