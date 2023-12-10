@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/getsentry/sentry-go"
 	_ "github.com/lib/pq"
 )
 
@@ -20,6 +21,11 @@ func NewConnection() (*sql.DB, error) {
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		return nil, err
+	}
+
+	if err != nil {
+		sentry.CaptureException(err)
+		// handle the error
 	}
 
 	err = db.Ping()

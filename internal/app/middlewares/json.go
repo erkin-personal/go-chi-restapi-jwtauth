@@ -1,5 +1,5 @@
 
-package middleware
+package middlewares
 
 import (
 	"encoding/json"

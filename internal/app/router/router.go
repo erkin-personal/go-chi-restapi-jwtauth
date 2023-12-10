@@ -11,8 +11,9 @@ import (
 	"restapi/internal/app/handlers"
 	
 	"restapi/internal/app/middlewares"
-	appMiddleware "restapi/internal/app/middleware"
+	appMiddleware "restapi/internal/app/middlewares"
 )
+
 
 func NewRouter(dbConn *sql.DB) http.Handler {
 	r := chi.NewRouter()
@@ -24,6 +25,8 @@ func NewRouter(dbConn *sql.DB) http.Handler {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.Timeout(60 * time.Second))
+
+	
 
 	r.Route("/api/v1", func(r chi.Router) {
 		userHandler := handlers.NewUserHandler(dbConn)
@@ -55,9 +58,12 @@ func NewRouter(dbConn *sql.DB) http.Handler {
 	})
 
 
-	
+	r.Get("/error", handlers.ErrorHandler)
+	r.NotFound(handlers.NotFoundHandler)
+
 	return r
 }
+
 
 
 

@@ -30,6 +30,10 @@ func init() {
         log.Fatal("Error loading .env file:", err)
     }
 
+	if err != nil {
+		sentry.CaptureException(err)
+		// handle the error
+	}
 }
 
 func main() {
@@ -37,11 +41,13 @@ func main() {
 	err := sentry.Init(sentry.ClientOptions{
         Dsn: "https://dc76d816bcdae49efdb05c0d460486c9@sentry.its.zone/4",
     })
+	
     if err != nil {
         log.Fatalf("sentry.Init: %s", err)
     }
 
 	
+
     defer sentry.Flush(2 * time.Second)
 
 

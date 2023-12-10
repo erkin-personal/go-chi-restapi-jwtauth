@@ -1,10 +1,8 @@
 package middlewares
 
 import (
-	"net/http"
-
-	"github.com/getsentry/sentry-go"
-	
+    "net/http"
+    "github.com/getsentry/sentry-go"
 )
 
 func SentryMiddleware(next http.Handler) http.Handler {
@@ -16,16 +14,13 @@ func SentryMiddleware(next http.Handler) http.Handler {
         }
         hub.Scope().SetRequest(r)
 
+        defer func() {
+            if err := recover(); err != nil {
+                hub.Recover(err)
+                // Optionally, write a generic error response to the client
+            }
+        }()
+
         next.ServeHTTP(w, r)
-
-        if err := recover(); err != nil {
-            hub.Recover(err)
-            // respond with error
-        }
     })
-}
-
-func runServer() error {
-    // Server setup and start code...
-	return http.ErrAbortHandler
 }

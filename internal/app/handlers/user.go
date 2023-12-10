@@ -3,12 +3,16 @@ package handlers
 import (
 	"database/sql"
 	"encoding/json"
-	"net/http"
 	"fmt"
+	"net/http"
+
+	"github.com/getsentry/sentry-go"
 	"github.com/go-chi/chi"
 
 	"restapi/internal/domain/models"
 	"restapi/internal/domain/services"
+
+
 )
 
 type UserHandler struct {
@@ -50,9 +54,11 @@ func (uh *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	err := uh.userService.Create(&user)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error post user: %v", err), http.StatusInternalServerError)
+		sentry.CaptureException(err)
 		return
 	}
 
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(user)
 }
+

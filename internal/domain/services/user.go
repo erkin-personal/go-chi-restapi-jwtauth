@@ -2,6 +2,8 @@ package services
 
 import (
 	"restapi/internal/domain/models"
+
+	
 )
 
 type UserService struct {
@@ -9,9 +11,11 @@ type UserService struct {
 }
 
 func NewUserService(userRepo *models.UserRepository) *UserService {
+	
 	return &UserService{
 		userRepo: userRepo,
 	}
+    
 }
 
 func (us *UserService) GetAll() ([]*models.User, error) {
